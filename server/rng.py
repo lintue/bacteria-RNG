@@ -1,19 +1,19 @@
 """RNG from images
 
-* Primarily to be used as part of the web app backend;
-* but can also be used to convert single images using command line.
+Primarily to be used as part of the web app backend;
+but may also be used as a stand-along program.
 
 pixel-tree, 2020.
 """
 
 # TO DO:
-# function to preprocess images
-# function to find hash
-# function for RNG algorithm
+# function for RNG algorithm (use hash to seed)
 # route to Flask
+# fix imread error
 
 import argparse
 import os
+import sys
 import time
 
 import cv2
@@ -43,11 +43,11 @@ def nu_image():
 # Difference hashing function.
 def dHash(image, hashSize=8):
     # Add extra column to image.
-    resize = cv2.resize(image, (hashSize + 1, hashSize))
+    resized = cv2.resize(image, (hashSize + 1, hashSize))
     # Compute horizontal gradient between pixels
     # (adjacent pixel brighter or darker).
-    difference = resize[:, 1:] > resize[:, :-1]
-    # Convert processed image to 64bit integer (hash).
+    difference = resized[:, 1:] > resized[:, :-1]
+    # Convert processed image to 64-bit integer (hash).
     return sum([2 ** i for (i, j) in enumerate(difference.flatten()) if j])
 
 
@@ -56,23 +56,31 @@ def image2hash(img_path):
     # Load image from path.
     image = cv2.imread(img_path)
     # Convert image to grayscale.
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # Compute hash.
-    return dHash(image)
+    return dHash(grayscale)
 
 
-# Convert from dataset.
+# If used as stand-alone program.
 if __name__ == "__main__":
+    # Count number of images in dataset directory (if any).
+    count = len([f for f in os.listdir(dataset_dir) if not f.startswith(".")])
+
+    # If image is given in argument, extract hash for provided file;
+    # else if ./images directory has images, extract hash for newest file;
+    # else, print error message and exit.
+    if args.image:
+        latest = os.path.join(dataset_dir, args.image)
+    elif count > 0:
+        latest = nu_image()
+    else:
+        print("\n" + "Please provide image in argument: -i <name>.<ext>" + "\n"
+              "OR add images to dataset directory (default ./images/)." + "\n")
+        sys.exit()
+
     # Start counter.
     print("\n" + "Conversion initiated...")
     start = time.time()
-
-    # If image path is given, extract hash for chosen file;
-    # else find path to latest image in dataset.
-    if args.image:
-        latest = os.path.join(dataset_dir, args.image)
-    else:
-        latest = nu_image()
 
     # Extract hash.
     hash = image2hash(latest)
