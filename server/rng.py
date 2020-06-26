@@ -7,12 +7,13 @@ pixel-tree, 2020.
 """
 
 # TO DO:
-# function for RNG algorithm (use hash to seed)
+# function for RNG algorithm (replace random library with bespoke algo)
 # route to Flask
 # fix imread error
 
 import argparse
 import os
+import random
 import sys
 import time
 
@@ -21,8 +22,21 @@ import cv2
 # Arguments (used for command line implementation).
 parser = argparse.ArgumentParser(description=None)
 parser.add_argument("-i", "--image",
+                    type=str,
                     help="Enter image filename.extension (e.g., data.png).")
+parser.add_argument("-r", "--range",
+                    help="Enter two integers for RNG range (e.g., 1 100).",
+                    type=int,
+                    nargs=2)
 args = parser.parse_args()
+
+# Set RNG range.
+if args.range:
+    MIN, MAX = args.range[0], args.range[1]
+    range_msg = "Range: " + str(MIN) + "-" + str(MAX) + "."
+else:
+    MIN, MAX = 1, 100
+    range_msg = "Default range: " + str(MIN) + "-" + str(MAX) + "."
 
 # Absolute path for dataset.
 script_dir = os.path.dirname(__file__)
@@ -40,7 +54,7 @@ def nu_image():
     return max(paths, key=os.path.getctime)
 
 
-# Difference hashing function.
+# Difference hashing.
 def dHash(image, hashSize=8):
     # Add extra column to image.
     resized = cv2.resize(image, (hashSize + 1, hashSize))
@@ -53,7 +67,7 @@ def dHash(image, hashSize=8):
 
 # Extract image hash using dHash.
 def image2hash(img_path):
-    # Load image from path.
+    # Load image.
     image = cv2.imread(img_path)
     # Convert image to grayscale.
     grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -61,7 +75,13 @@ def image2hash(img_path):
     return dHash(grayscale)
 
 
-# If used as stand-alone program.
+# Mersenne Twister (using Python's random library)
+def rng(seed):
+    random.seed(seed)
+    return random.randint(MIN, MAX)
+
+
+# Executed when used as a stand-along program.
 if __name__ == "__main__":
     # Count number of images in dataset directory (if any).
     count = len([f for f in os.listdir(dataset_dir) if not f.startswith(".")])
@@ -74,23 +94,26 @@ if __name__ == "__main__":
     elif count > 0:
         latest = nu_image()
     else:
-        print("\n" + "Please provide image in argument: -i <name>.<ext>" + "\n"
-              "OR add images to dataset directory (default ./images/)." + "\n")
+        print("\n" + "Please provide an image: -i <filename>.<ext>" + "\n"
+              "OR add images to dataset directory:", rel_path + "\n")
         sys.exit()
 
     # Start counter.
     print("\n" + "Conversion initiated...")
+    print(range_msg)
     start = time.time()
 
-    # Extract hash.
+    # Extract hash and compute random integer using hash as seed.
     hash = image2hash(latest)
+    RNG = rng(hash)
 
     # Display hash and time elapsed.
     end = time.time()
     elapsed = round(end - start, 1)
-    print("\n" + "COMPLETED.")
-    print("Hash:", hash)
-    print("Time Elapsed:", elapsed, "s" + "\n")
+    print("COMPLETED. Time elapsed:", elapsed, "s." + "\n")
+    print("Hash:", hash, "\n")
+    print("RNG:", RNG, "\n")
+
 
 """
 Folder/live stream of images
