@@ -1,0 +1,9 @@
+.DS_Store
+
+server/.Python
+server/bin/
+server/include/
+server/lib/
+server/pip-selfcheck.json
+
+static/node_modules/
