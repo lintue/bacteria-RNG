@@ -2,7 +2,7 @@
  * Loader.
  */
 
-import '../style/main.scss'
+import '../style/loader.scss'
 
 import { load_img } from './Media'
 
@@ -12,14 +12,18 @@ const loader = document.createElement('div')
 loader.id = 'loader'
 document.body.appendChild(loader)
 
+const loaderFrame = document.createElement('div')
+loaderFrame.id = 'loaderFrame'
+loader.appendChild(loaderFrame)
+
 const loaderImg = document.createElement('img')
 loaderImg.src = load_img
 loaderImg.id = 'loaderImg'
-loader.appendChild(loaderImg)
+loaderFrame.appendChild(loaderImg)
 
 const loaderTxt = document.createElement('div')
 loaderTxt.id = 'loaderTxt'
-loader.appendChild(loaderTxt)
+loaderFrame.appendChild(loaderTxt)
 
 /**
  * Request main JS and begin.

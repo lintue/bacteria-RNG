@@ -10,15 +10,16 @@ $fontI : adobeDevItalic;
 $black : rgb(0, 0, 0);
 $white : rgb(255, 255, 255);
 $gray : rgb(211, 211, 211);
+$palette : rgb(242, 242, 255);
 
-body, #container, #loader {
+body, #container {
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	margin: 0px;
-	background-color: $white;
+	background-color: $palette;
 }
 
 /* Fonts */
@@ -39,34 +40,6 @@ body, #container, #loader {
 	font-family: adobeDevItalic;
 	src: url('../media/fonts/AD-Italic.woff') format('woff'),
 	     url('../media/fonts/AD-Italic.ttf') format('truetype');
-}
-
-/* Loader */
-
-#loaderImg {
-	width: 900px;
-	height: 600px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 45px;
-	-webkit-filter: blur(9px);
-	-moz-filter: blur(9px);
-	-o-filter: blur(9px);
-	-ms-filter: blur(9px);
-	filter: blur(9px);
-}
-
-#loaderTxt {
-	width: 900px;
-	height: 600px;
-	position: absolute;
-	font-family: $fontN;
-	color: $white;
-	font-size: 15px;
-	line-height: 600px;
-	text-align: center;
-	text-shadow: 1.2px 1.2px $gray;
 }
 
 /* Main */

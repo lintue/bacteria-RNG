@@ -16,7 +16,7 @@ let $ = require('jquery')
  */
 
  if (process.env.NODE_ENV == 'production') {
-   $('#loader').fadeOut(1200, function() {
+   $('#loader').fadeOut(3000, function() {
      $(this).remove()
    })
  }
@@ -42,6 +42,7 @@ frame.appendChild(hashing)
 const number = document.createElement('div')
 number.id = 'number'
 frame.appendChild(number)
+
 
 /**
  * Image sequence.
@@ -72,7 +73,7 @@ function sequencer() {
     $('#hashing').text(shuffled)
 
     $('#number').text(Math.floor(Math.random() * 100))
-    $('#number').delay(450).fadeOut(1000)
+    $('#number').delay(450).fadeOut(900)
 
     i = (i + 1) % images.length
 
