@@ -9,7 +9,7 @@ $fontI : adobeDevItalic;
 
 $black : rgb(0, 0, 0);
 $white : rgb(255, 255, 255);
-$gray : rgb(211, 211, 211);
+$gray : rgb(106, 109, 110);
 $palette : rgb(242, 242, 255);
 
 body, #container {
@@ -70,11 +70,6 @@ body, #container {
 	color: $gray;
 	overflow: hidden;
 	overflow-wrap: break-word;
-	-webkit-filter: blur(1px);
-	-moz-filter: blur(1px);
-	-o-filter: blur(1px);
-	-ms-filter: blur(1px);
-	filter: blur(1px);
 }
 
 #number {

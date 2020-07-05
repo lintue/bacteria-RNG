@@ -68,13 +68,12 @@ function sequencer() {
 
     image.src = images[i]
 
-    $('#number').fadeIn(50)
-
     let shuffled = hash[0] + hash[1].split('').sort(function(){ return 0.5 - Math.random() }).join('')
     $('#hashing').text(shuffled)
 
     $('#number').text(Math.floor(Math.random() * 100))
-    $('#number').delay(450).fadeOut(900)
+    $('#number').fadeIn(50)
+    $('#number').delay(450).fadeOut(800)
 
     i = (i + 1) % images.length
 
