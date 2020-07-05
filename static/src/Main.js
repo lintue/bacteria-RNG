@@ -16,7 +16,7 @@ let $ = require('jquery')
  */
 
  if (process.env.NODE_ENV == 'production') {
-   $('#loader').fadeOut(3000, function() {
+   $('#loader').fadeOut(2100, function() {
      $(this).remove()
    })
  }
@@ -30,8 +30,9 @@ frame.id = 'frame'
 container.appendChild(frame)
 
 const imageBox = document.createElement('div')
-const image = document.createElement('img')
 imageBox.id = 'image'
+const image = document.createElement('img')
+image.src = a
 frame.appendChild(imageBox)
 imageBox.appendChild(image)
 
