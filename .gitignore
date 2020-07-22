@@ -5,5 +5,12 @@ server/bin/
 server/include/
 server/lib/
 server/pip-selfcheck.json
+server/images/
 
 static/node_modules/
+static/build/
+static/build-fonts/
+static/loader/
+static/node_modules/
+static/package-lock.json
+
