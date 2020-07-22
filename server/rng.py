@@ -1,13 +1,13 @@
 """RNG from images
 
-Primarily to be used as part of the web app backend;
-but may also be used as a stand-along program.
+Primarily to be used as part of included web app;
+but may also be used as a stand-alone program.
 
 pixel-tree, 2020.
 """
 
 # TO DO:
-# function for RNG algorithm (replace random library with bespoke algo)
+# function for PRNG algorithm (replace random library)
 # route to Flask
 # fix imread error
 
@@ -19,7 +19,7 @@ import time
 
 import cv2
 
-# Arguments (used for command line implementation).
+# Arguments.
 parser = argparse.ArgumentParser(description=None)
 parser.add_argument("-i", "--image",
                     type=str,
@@ -44,7 +44,7 @@ rel_path = "./images/"
 dataset_dir = os.path.join(script_dir, rel_path)
 
 
-# Find newest image (used in converting from data stream, e.g., live video).
+# Find newest image (from data stream, e.g., live video).
 def nu_image():
     # List files in dataset directory.
     files = os.listdir(dataset_dir)
@@ -75,19 +75,19 @@ def image2hash(img_path):
     return dHash(grayscale)
 
 
-# Mersenne Twister (using Python's random library)
+# Mersenne Twister (/Python's random library - TO DO replace)
 def rng(seed):
     random.seed(seed)
     return random.randint(MIN, MAX)
 
 
-# Executed when used as a stand-along program.
+# When used as a stand-along program.
 if __name__ == "__main__":
     # Count number of images in dataset directory (if any).
     count = len([f for f in os.listdir(dataset_dir) if not f.startswith(".")])
 
-    # If image is given in argument, extract hash for provided file;
-    # else if ./images directory has images, extract hash for newest file;
+    # If image is given in argument, extract hash for specified file;
+    # if not explicitly defined and directory has images, extract hash for newest file;
     # else, print error message and exit.
     if args.image:
         latest = os.path.join(dataset_dir, args.image)
@@ -98,12 +98,10 @@ if __name__ == "__main__":
               "OR add images to dataset directory:", rel_path + "\n")
         sys.exit()
 
-    # Start counter.
+    # Extract hash and compute random integer using hash as seed.
     print("\n" + "Conversion initiated...")
     print(range_msg)
     start = time.time()
-
-    # Extract hash and compute random integer using hash as seed.
     hash = image2hash(latest)
     RNG = rng(hash)
 
@@ -122,6 +120,6 @@ Folder/live stream of images
 
 Single images
 => Display images in browser
-=> onclick (JS) send ID to Python backend => {id: path} or something similar?
+=> onclick send ID to backend => {id: path} or something similar?
 => image2hash(path_from_dictionary)
 """
